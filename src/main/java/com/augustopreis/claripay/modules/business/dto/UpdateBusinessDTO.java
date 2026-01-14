@@ -32,4 +32,6 @@ public class UpdateBusinessDTO {
   private String cellphone;
 
   private BusinessTypeEnum type;
+
+  private Boolean active;
 }

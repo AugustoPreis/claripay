@@ -21,7 +21,7 @@ public class FindOneBusinessUseCase {
   public BusinessDTO execute(Long id) {
     Long userId = auth.getAuthenticatedId();
 
-    var business = businessRepository.findByIdAndUserId(id, userId)
+    var business = businessRepository.findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Negócio não encontrado"));
 
     return businessMapper.toDTO(business);

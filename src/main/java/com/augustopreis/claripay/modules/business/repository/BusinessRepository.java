@@ -14,5 +14,9 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
   Optional<Business> findByIdAndUserId(Long id, Long userId);
 
+  Optional<Business> findByIdAndUserIdAndActiveTrue(Long id, Long userId);
+
   Page<Business> findAllByUserId(Long userId, Pageable pageable);
+
+  Page<Business> findAllByUserIdAndActiveTrue(Long userId, Pageable pageable);
 }

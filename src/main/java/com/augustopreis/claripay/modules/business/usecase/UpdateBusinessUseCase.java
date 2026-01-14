@@ -25,7 +25,7 @@ public class UpdateBusinessUseCase {
   public BusinessDTO execute(Long id, UpdateBusinessDTO request) {
     Long userId = auth.getAuthenticatedId();
 
-    Business business = businessRepository.findByIdAndUserId(id, userId)
+    Business business = businessRepository.findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Negócio não encontrado"));
 
     businessMapper.updateBusinessFromDTO(request, business);

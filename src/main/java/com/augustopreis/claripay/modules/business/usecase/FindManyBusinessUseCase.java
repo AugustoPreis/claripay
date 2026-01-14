@@ -23,7 +23,7 @@ public class FindManyBusinessUseCase {
   public Page<BusinessDTO> execute(Pageable pageable) {
     Long userId = auth.getAuthenticatedId();
 
-    Page<Business> businesses = businessRepository.findAllByUserId(userId, pageable);
+    Page<Business> businesses = businessRepository.findAllByUserIdAndActiveTrue(userId, pageable);
 
     return businesses.map(businessMapper::toDTO);
   }
