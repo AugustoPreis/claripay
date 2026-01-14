@@ -1,7 +1,8 @@
 package com.augustopreis.claripay.exception;
 
-import com.augustopreis.claripay.common.response.ErrorResponse;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,14 +11,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.augustopreis.claripay.common.response.ErrorResponse;
 
 /**
  * Handler global de exceções da aplicação
  * Padroniza respostas de erro em formato JSON
  */
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -36,7 +35,6 @@ public class GlobalExceptionHandler {
         "Erro de validação nos dados enviados",
         errors);
 
-    log.warn("Erro de validação: {}", errors);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
   }
 
@@ -49,7 +47,6 @@ public class GlobalExceptionHandler {
         ex.getMessage(),
         List.of(ex.getMessage()));
 
-    log.warn("Erro de negócio: {}", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
   }
 
@@ -62,7 +59,6 @@ public class GlobalExceptionHandler {
         ex.getMessage(),
         List.of(ex.getMessage()));
 
-    log.warn("Recurso não encontrado: {}", ex.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
   }
 
@@ -75,7 +71,6 @@ public class GlobalExceptionHandler {
         "E-mail ou senha inválidos",
         List.of("Credenciais inválidas"));
 
-    log.warn("Tentativa de login com credenciais inválidas");
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
   }
 
@@ -87,8 +82,6 @@ public class GlobalExceptionHandler {
     ErrorResponse errorResponse = new ErrorResponse(
         "Ocorreu um erro inesperado. Tente novamente mais tarde.",
         List.of("Erro interno do servidor"));
-
-    log.error("Erro não tratado: ", ex);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
   }
 }
