@@ -35,3 +35,9 @@ build/
 ### Local Configuration ###
 application-local.properties
 **/application-local.properties
+
+### H2 Database Files ###
+data/
+*.db
+*.trace.db
+*.lock.db
