@@ -1,19 +1,19 @@
 package com.augustopreis.claripay.modules.auth.usecase;
 
-import com.augustopreis.claripay.exception.BusinessException;
-import com.augustopreis.claripay.modules.auth.dto.AuthResponseDTO;
-import com.augustopreis.claripay.modules.auth.dto.RegisterRequestDTO;
-import com.augustopreis.claripay.modules.user.repository.entity.User;
-import com.augustopreis.claripay.modules.user.mapper.UserMapper;
-import com.augustopreis.claripay.modules.user.repository.UserRepository;
-import com.augustopreis.claripay.security.JwtUtil;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
+import com.augustopreis.claripay.exception.BusinessException;
+import com.augustopreis.claripay.modules.auth.dto.AuthResponseDTO;
+import com.augustopreis.claripay.modules.auth.dto.RegisterRequestDTO;
+import com.augustopreis.claripay.modules.user.mapper.UserMapper;
+import com.augustopreis.claripay.modules.user.repository.UserRepository;
+import com.augustopreis.claripay.modules.user.repository.entity.User;
+import com.augustopreis.claripay.security.JwtUtil;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
 @RequiredArgsConstructor
 public class RegisterUseCase {
@@ -26,7 +26,6 @@ public class RegisterUseCase {
   @Transactional
   public AuthResponseDTO execute(RegisterRequestDTO request) {
     if (userRepository.existsByEmail(request.getEmail())) {
-      log.warn("Tentativa de registro com e-mail já existente: {}", request.getEmail());
       throw new BusinessException("E-mail já cadastrado");
     }
 

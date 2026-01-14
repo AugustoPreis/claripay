@@ -1,19 +1,18 @@
 package com.augustopreis.claripay.modules.auth.usecase;
 
-import com.augustopreis.claripay.exception.BusinessException;
-import com.augustopreis.claripay.modules.auth.dto.ResetPasswordRequestDTO;
-import com.augustopreis.claripay.modules.user.repository.entity.User;
-import com.augustopreis.claripay.modules.user.repository.UserRepository;
+import java.time.LocalDateTime;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import com.augustopreis.claripay.exception.BusinessException;
+import com.augustopreis.claripay.modules.auth.dto.ResetPasswordRequestDTO;
+import com.augustopreis.claripay.modules.user.repository.UserRepository;
+import com.augustopreis.claripay.modules.user.repository.entity.User;
 
-@Slf4j
+import lombok.RequiredArgsConstructor;
+
 @Component
 @RequiredArgsConstructor
 public class ResetPasswordUseCase {
@@ -23,17 +22,12 @@ public class ResetPasswordUseCase {
 
   @Transactional
   public void execute(ResetPasswordRequestDTO request) {
-    log.info("Tentativa de reset de senha com token: {}", request.getToken());
 
     User user = userRepository.findByResetToken(request.getToken())
-        .orElseThrow(() -> {
-          log.warn("Token de reset inválido: {}", request.getToken());
-          return new BusinessException("Token inválido ou expirado");
-        });
+        .orElseThrow(() -> this.invalidTokenException());
 
     if (user.getResetTokenExpiry() == null || user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
-      log.warn("Token de reset expirado para usuário: {}", user.getEmail());
-      throw new BusinessException("Token inválido ou expirado");
+      throw this.invalidTokenException();
     }
 
     user.setPassword(passwordEncoder.encode(request.getNewPassword()));
@@ -41,5 +35,9 @@ public class ResetPasswordUseCase {
     user.setResetTokenExpiry(null);
 
     userRepository.save(user);
+  }
+
+  private BusinessException invalidTokenException() {
+    return new BusinessException("Token inválido ou expirado");
   }
 }
