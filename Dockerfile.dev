@@ -1,0 +1,12 @@
+FROM maven:3.9-eclipse-temurin-25
+
+WORKDIR /app
+
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
+COPY src ./src
+
+EXPOSE 8080
+
+CMD ["mvn", "spring-boot:run", "-Dspring-boot.run.fork=false"]
