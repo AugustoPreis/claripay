@@ -19,7 +19,7 @@ help:
 	@echo "  make prod-down    - Para ambiente de produção"
 
 run:
-	./mvnw spring-boot:run
+	./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 
 test:
 	./mvnw test
