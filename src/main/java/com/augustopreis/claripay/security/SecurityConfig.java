@@ -40,7 +40,10 @@ public class SecurityConfig {
         .cors(cors -> {
         })
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/auth/register").permitAll()
+            .requestMatchers("/api/auth/login").permitAll()
+            .requestMatchers("/api/auth/forgot-password").permitAll()
+            .requestMatchers("/api/auth/reset-password").permitAll()
             .requestMatchers("/actuator/**").permitAll()
             .requestMatchers("/h2-console/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/health").permitAll()

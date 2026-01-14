@@ -1,14 +1,28 @@
 package com.augustopreis.claripay.modules.auth.controller;
 
-import com.augustopreis.claripay.common.response.ApiResponse;
-import com.augustopreis.claripay.modules.auth.dto.*;
-import com.augustopreis.claripay.modules.auth.usecase.*;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.augustopreis.claripay.common.response.ApiResponse;
+import com.augustopreis.claripay.modules.auth.dto.AuthResponseDTO;
+import com.augustopreis.claripay.modules.auth.dto.ForgotPasswordRequestDTO;
+import com.augustopreis.claripay.modules.auth.dto.LoginRequestDTO;
+import com.augustopreis.claripay.modules.auth.dto.RegisterRequestDTO;
+import com.augustopreis.claripay.modules.auth.dto.ResetPasswordRequestDTO;
+import com.augustopreis.claripay.modules.auth.usecase.ForgotPasswordUseCase;
+import com.augustopreis.claripay.modules.auth.usecase.GetAuthenticatedUserUseCase;
+import com.augustopreis.claripay.modules.auth.usecase.LoginUseCase;
+import com.augustopreis.claripay.modules.auth.usecase.RegisterUseCase;
+import com.augustopreis.claripay.modules.auth.usecase.ResetPasswordUseCase;
+import com.augustopreis.claripay.modules.user.dto.UserDTO;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -19,6 +33,7 @@ public class AuthController {
   private final LoginUseCase login;
   private final ForgotPasswordUseCase forgotPassword;
   private final ResetPasswordUseCase resetPassword;
+  private final GetAuthenticatedUserUseCase getAuthenticatedUser;
 
   @PostMapping("/register")
   public ResponseEntity<ApiResponse<AuthResponseDTO>> register(@Valid @RequestBody RegisterRequestDTO request) {
@@ -48,5 +63,12 @@ public class AuthController {
     resetPassword.execute(request);
 
     return ResponseEntity.ok(ApiResponse.success("Senha alterada com sucesso", null));
+  }
+
+  @GetMapping("/me")
+  public ResponseEntity<ApiResponse<UserDTO>> me() {
+    UserDTO user = getAuthenticatedUser.execute();
+
+    return ResponseEntity.ok(ApiResponse.success("Usuário autenticado", user));
   }
 }
