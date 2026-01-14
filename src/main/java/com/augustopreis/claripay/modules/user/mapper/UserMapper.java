@@ -1,11 +1,12 @@
 package com.augustopreis.claripay.modules.user.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 import com.augustopreis.claripay.modules.auth.dto.AuthResponseDTO;
 import com.augustopreis.claripay.modules.auth.dto.RegisterRequestDTO;
 import com.augustopreis.claripay.modules.user.dto.UserDTO;
 import com.augustopreis.claripay.modules.user.repository.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -16,6 +17,10 @@ public interface UserMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "active", constant = "true")
   @Mapping(target = "emailVerified", constant = "false")
+  @Mapping(target = "resetToken", constant = "false")
+  @Mapping(target = "resetTokenExpiry", constant = "false")
+  @Mapping(target = "createdAt", constant = "false")
+  @Mapping(target = "updatedAt", constant = "false")
   User toEntity(RegisterRequestDTO request);
 
   @Mapping(target = "token", source = "token")
