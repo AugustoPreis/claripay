@@ -64,6 +64,10 @@ public class Withdrawal {
   @Column(nullable = false, length = 50)
   private WithdrawalTypeEnum type;
 
+  @Builder.Default
+  @Column(nullable = false)
+  private Boolean active = true;
+
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;

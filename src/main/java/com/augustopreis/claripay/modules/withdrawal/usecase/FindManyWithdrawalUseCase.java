@@ -23,7 +23,7 @@ public class FindManyWithdrawalUseCase {
     Long userId = auth.getAuthenticatedId();
 
     return withdrawalRepository
-        .findByUserId(userId, pageable)
+        .findByUserIdAndActiveTrue(userId, pageable)
         .map(withdrawalMapper::toDTO);
   }
 }

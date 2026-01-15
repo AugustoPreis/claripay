@@ -26,7 +26,7 @@ public class UpdateWithdrawalUseCase {
     Long userId = auth.getAuthenticatedId();
 
     Withdrawal withdrawal = withdrawalRepository
-        .findByIdAndUserId(id, userId)
+        .findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Retirada não encontrada"));
 
     withdrawalMapper.updateWithdrawalFromDTO(request, withdrawal);

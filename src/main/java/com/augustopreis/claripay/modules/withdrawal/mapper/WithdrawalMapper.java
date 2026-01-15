@@ -18,6 +18,7 @@ public interface WithdrawalMapper {
   WithdrawalDTO toDTO(Withdrawal withdrawal);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "active", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   Withdrawal toEntity(CreateWithdrawalDTO request);
@@ -25,6 +26,7 @@ public interface WithdrawalMapper {
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "user", ignore = true)
+  @Mapping(target = "active", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   void updateWithdrawalFromDTO(UpdateWithdrawalDTO dto, @MappingTarget Withdrawal withdrawal);

@@ -16,13 +16,14 @@ import com.augustopreis.claripay.modules.withdrawal.repository.entity.Withdrawal
 @Repository
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, Long> {
 
-  Page<Withdrawal> findByUserId(Long userId, Pageable pageable);
+  Page<Withdrawal> findByUserIdAndActiveTrue(Long userId, Pageable pageable);
 
-  Optional<Withdrawal> findByIdAndUserId(Long id, Long userId);
+  Optional<Withdrawal> findByIdAndUserIdAndActiveTrue(Long id, Long userId);
 
   @Query("SELECT COALESCE(SUM(w.amount), 0) FROM Withdrawal w " +
       "WHERE w.user.id = :userId " +
-      "AND w.date BETWEEN :startDate AND :endDate")
+      "AND w.date BETWEEN :startDate AND :endDate " +
+      "AND w.active = true")
   BigDecimal sumByUserIdAndDateBetween(
       @Param("userId") Long userId,
       @Param("startDate") LocalDate startDate,

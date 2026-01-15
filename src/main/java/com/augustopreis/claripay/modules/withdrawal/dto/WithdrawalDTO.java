@@ -22,6 +22,7 @@ public class WithdrawalDTO {
   private BigDecimal amount;
   private LocalDate date;
   private WithdrawalTypeEnum type;
+  private Boolean active;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 }

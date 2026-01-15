@@ -23,7 +23,7 @@ public class FindOneWithdrawalUseCase {
     Long userId = auth.getAuthenticatedId();
 
     Withdrawal withdrawal = withdrawalRepository
-        .findByIdAndUserId(id, userId)
+        .findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Retirada não encontrada"));
 
     return withdrawalMapper.toDTO(withdrawal);

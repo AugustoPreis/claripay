@@ -22,9 +22,10 @@ public class RemoveWithdrawalUseCase {
     Long userId = auth.getAuthenticatedId();
 
     Withdrawal withdrawal = withdrawalRepository
-        .findByIdAndUserId(id, userId)
+        .findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Retirada não encontrada"));
 
-    withdrawalRepository.delete(withdrawal);
+    withdrawal.setActive(false);
+    withdrawalRepository.save(withdrawal);
   }
 }
