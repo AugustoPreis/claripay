@@ -2,14 +2,6 @@
 
 Sistema de gestão financeira para pequenos empresários e profissionais autônomos, focado em clareza, simplicidade e organização.
 
-## Sobre o Projeto
-
-O ClariPay é uma API REST que permite gerenciar:
-
-- **Autenticação de usuários** - Registro, login, recuperação de senha com JWT
-- **Negócios (Businesses)** - Cadastro e gestão de empresas
-- **Serviços** - Cadastro dos serviços oferecidos
-
 ---
 
 ## Arquitetura
