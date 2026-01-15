@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.augustopreis.claripay.config.seed.BusinessSeeder;
+import com.augustopreis.claripay.config.seed.ChargeSeeder;
 import com.augustopreis.claripay.config.seed.CustomerSeeder;
 import com.augustopreis.claripay.config.seed.ServiceSeeder;
 import com.augustopreis.claripay.config.seed.UserSeeder;
@@ -20,6 +21,7 @@ public class DatabaseSeeder {
   private final BusinessSeeder businessSeeder;
   private final ServiceSeeder serviceSeeder;
   private final CustomerSeeder customerSeeder;
+  private final ChargeSeeder chargeSeeder;
 
   @Bean
   @Profile("!prod")
@@ -29,6 +31,7 @@ public class DatabaseSeeder {
       businessSeeder.seed();
       serviceSeeder.seed();
       customerSeeder.seed();
+      chargeSeeder.seed();
     };
   }
 }
