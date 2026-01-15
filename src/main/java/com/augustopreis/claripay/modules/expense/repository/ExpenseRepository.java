@@ -1,5 +1,6 @@
 package com.augustopreis.claripay.modules.expense.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -28,4 +29,14 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
       @Param("startDate") LocalDate startDate,
       @Param("endDate") LocalDate endDate,
       Pageable pageable);
+
+  @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e " +
+      "WHERE e.user.id = :userId " +
+      "AND e.type = :type " +
+      "AND e.date BETWEEN :startDate AND :endDate")
+  BigDecimal sumByUserIdAndTypeAndDateBetween(
+      @Param("userId") Long userId,
+      @Param("type") ExpenseTypeEnum type,
+      @Param("startDate") LocalDate startDate,
+      @Param("endDate") LocalDate endDate);
 }

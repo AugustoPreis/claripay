@@ -11,6 +11,7 @@ import com.augustopreis.claripay.config.seed.CustomerSeeder;
 import com.augustopreis.claripay.config.seed.ExpenseSeeder;
 import com.augustopreis.claripay.config.seed.ServiceSeeder;
 import com.augustopreis.claripay.config.seed.UserSeeder;
+import com.augustopreis.claripay.config.seed.WithdrawalSeeder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ public class DatabaseSeeder {
   private final CustomerSeeder customerSeeder;
   private final ChargeSeeder chargeSeeder;
   private final ExpenseSeeder expenseSeeder;
+  private final WithdrawalSeeder withdrawalSeeder;
 
   @Bean
   @Profile("!prod")
@@ -35,6 +37,7 @@ public class DatabaseSeeder {
       customerSeeder.seed();
       chargeSeeder.seed();
       expenseSeeder.seed();
+      withdrawalSeeder.seed();
     };
   }
 }
