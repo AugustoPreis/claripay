@@ -23,6 +23,8 @@ public interface ChargeRepository extends JpaRepository<Charge, Long>, JpaSpecif
 
   List<Charge> findByDueDateBeforeAndStatusAndActiveTrue(LocalDate date, ChargeStatusEnum status);
 
+  List<Charge> findAllByStatusAndActiveTrue(ChargeStatusEnum status);
+
   @Query("SELECT COALESCE(SUM(c.amount), 0) FROM Charge c " +
       "WHERE c.user.id = :userId " +
       "AND c.status = :status " +
