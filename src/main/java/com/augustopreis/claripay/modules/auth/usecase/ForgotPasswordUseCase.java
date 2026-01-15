@@ -13,10 +13,8 @@ import com.augustopreis.claripay.modules.user.repository.UserRepository;
 import com.augustopreis.claripay.modules.user.repository.entity.User;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
 public class ForgotPasswordUseCase {
   private static final int TOKEN_EXPIRY_HOURS = 24;
