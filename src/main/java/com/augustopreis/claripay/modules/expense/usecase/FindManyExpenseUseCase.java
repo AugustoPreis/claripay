@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.augustopreis.claripay.common.util.AuthenticationUtil;
 import com.augustopreis.claripay.modules.expense.dto.ExpenseDTO;
+import com.augustopreis.claripay.modules.expense.enums.ExpenseTypeEnum;
 import com.augustopreis.claripay.modules.expense.mapper.ExpenseMapper;
 import com.augustopreis.claripay.modules.expense.repository.ExpenseRepository;
 
@@ -21,8 +22,14 @@ public class FindManyExpenseUseCase {
   private final AuthenticationUtil auth;
 
   @Transactional(readOnly = true)
-  public Page<ExpenseDTO> execute(Pageable pageable) {
+  public Page<ExpenseDTO> execute(ExpenseTypeEnum type, Pageable pageable) {
     Long userId = auth.getAuthenticatedId();
+
+    if (type != null) {
+      return expenseRepository
+          .findAllByUserIdAndTypeAndActiveTrue(userId, type, pageable)
+          .map(expenseMapper::toDTO);
+    }
 
     return expenseRepository
         .findAllByUserIdAndActiveTrue(userId, pageable)

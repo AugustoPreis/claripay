@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.augustopreis.claripay.common.response.ApiResponse;
 import com.augustopreis.claripay.modules.expense.dto.CreateExpenseDTO;
 import com.augustopreis.claripay.modules.expense.dto.ExpenseDTO;
 import com.augustopreis.claripay.modules.expense.dto.UpdateExpenseDTO;
+import com.augustopreis.claripay.modules.expense.enums.ExpenseTypeEnum;
 import com.augustopreis.claripay.modules.expense.usecase.CreateExpenseUseCase;
 import com.augustopreis.claripay.modules.expense.usecase.FindManyExpenseUseCase;
 import com.augustopreis.claripay.modules.expense.usecase.FindOneExpenseUseCase;
@@ -39,8 +41,10 @@ public class ExpenseController {
   final RemoveExpenseUseCase removeExpense;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<Page<ExpenseDTO>>> findAll(@PageableDefault(size = 10) Pageable pageable) {
-    Page<ExpenseDTO> response = findManyExpense.execute(pageable);
+  public ResponseEntity<ApiResponse<Page<ExpenseDTO>>> findAll(
+      @RequestParam(required = false) ExpenseTypeEnum type,
+      @PageableDefault(size = 10) Pageable pageable) {
+    Page<ExpenseDTO> response = findManyExpense.execute(type, pageable);
 
     return ResponseEntity
         .ok()
