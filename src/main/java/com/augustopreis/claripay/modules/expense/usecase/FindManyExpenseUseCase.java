@@ -25,7 +25,7 @@ public class FindManyExpenseUseCase {
     Long userId = auth.getAuthenticatedId();
 
     return expenseRepository
-        .findAllByUserId(userId, pageable)
+        .findAllByUserIdAndActiveTrue(userId, pageable)
         .map(expenseMapper::toDTO);
   }
 }

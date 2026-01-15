@@ -22,9 +22,10 @@ public class RemoveExpenseUseCase {
     Long userId = auth.getAuthenticatedId();
 
     Expense expense = expenseRepository
-        .findByIdAndUserId(id, userId)
+        .findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Despesa não encontrada"));
 
-    expenseRepository.delete(expense);
+    expense.setActive(false);
+    expenseRepository.save(expense);
   }
 }

@@ -23,6 +23,7 @@ public class ExpenseDTO {
   private BigDecimal amount;
   private LocalDate date;
   private ExpenseTypeEnum type;
+  private Boolean active;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 }

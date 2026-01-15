@@ -25,7 +25,7 @@ public class FindOneExpenseUseCase {
     Long userId = auth.getAuthenticatedId();
 
     Expense expense = expenseRepository
-        .findByIdAndUserId(id, userId)
+        .findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Despesa não encontrada"));
 
     return expenseMapper.toDTO(expense);

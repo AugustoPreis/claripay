@@ -18,6 +18,7 @@ public interface ExpenseMapper {
   ExpenseDTO toDTO(Expense expense);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "active", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   Expense toEntity(CreateExpenseDTO request);
@@ -25,6 +26,7 @@ public interface ExpenseMapper {
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "user", ignore = true)
+  @Mapping(target = "active", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   void updateExpenseFromDTO(UpdateExpenseDTO dto, @MappingTarget Expense expense);

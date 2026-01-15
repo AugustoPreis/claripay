@@ -17,13 +17,13 @@ import com.augustopreis.claripay.modules.expense.repository.entity.Expense;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-  Optional<Expense> findByIdAndUserId(Long id, Long userId);
+  Optional<Expense> findByIdAndUserIdAndActiveTrue(Long id, Long userId);
 
-  Page<Expense> findAllByUserId(Long userId, Pageable pageable);
+  Page<Expense> findAllByUserIdAndActiveTrue(Long userId, Pageable pageable);
 
-  Page<Expense> findAllByUserIdAndType(Long userId, ExpenseTypeEnum type, Pageable pageable);
+  Page<Expense> findAllByUserIdAndTypeAndActiveTrue(Long userId, ExpenseTypeEnum type, Pageable pageable);
 
-  @Query("SELECT e FROM Expense e WHERE e.user.id = :userId AND e.date BETWEEN :startDate AND :endDate")
+  @Query("SELECT e FROM Expense e WHERE e.user.id = :userId AND e.date BETWEEN :startDate AND :endDate AND e.active = true")
   Page<Expense> findAllByUserIdAndDateBetween(
       @Param("userId") Long userId,
       @Param("startDate") LocalDate startDate,
@@ -33,7 +33,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
   @Query("SELECT COALESCE(SUM(e.amount), 0) FROM Expense e " +
       "WHERE e.user.id = :userId " +
       "AND e.type = :type " +
-      "AND e.date BETWEEN :startDate AND :endDate")
+      "AND e.date BETWEEN :startDate AND :endDate " +
+      "AND e.active = true")
   BigDecimal sumByUserIdAndTypeAndDateBetween(
       @Param("userId") Long userId,
       @Param("type") ExpenseTypeEnum type,

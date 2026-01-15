@@ -64,6 +64,10 @@ public class Expense {
   @Column(nullable = false, length = 50)
   private ExpenseTypeEnum type;
 
+  @Builder.Default
+  @Column(nullable = false)
+  private Boolean active = true;
+
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;

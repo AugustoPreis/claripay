@@ -26,7 +26,7 @@ public class UpdateExpenseUseCase {
     Long userId = auth.getAuthenticatedId();
 
     Expense expense = expenseRepository
-        .findByIdAndUserId(id, userId)
+        .findByIdAndUserIdAndActiveTrue(id, userId)
         .orElseThrow(() -> new ResourceNotFoundException("Despesa não encontrada"));
 
     expenseMapper.updateExpenseFromDTO(request, expense);
