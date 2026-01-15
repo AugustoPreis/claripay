@@ -30,6 +30,8 @@ import com.augustopreis.claripay.modules.charge.usecase.FindOneChargeUseCase;
 import com.augustopreis.claripay.modules.charge.usecase.RemoveChargeUseCase;
 import com.augustopreis.claripay.modules.charge.usecase.UpdateChargeStatusUseCase;
 import com.augustopreis.claripay.modules.charge.usecase.UpdateChargeUseCase;
+import com.augustopreis.claripay.modules.payment.dto.PixPaymentDTO;
+import com.augustopreis.claripay.modules.payment.usecase.GenerateChargePixUseCase;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,7 @@ public class ChargeController {
   private final UpdateChargeUseCase updateCharge;
   private final UpdateChargeStatusUseCase updateChargeStatus;
   private final RemoveChargeUseCase removeCharge;
+  private final GenerateChargePixUseCase generateChargePix;
 
   @GetMapping
   public ResponseEntity<ApiResponse<Page<ChargeDTO>>> findAll(
@@ -106,5 +109,14 @@ public class ChargeController {
     return ResponseEntity
         .ok()
         .body(ApiResponse.success("Cobrança removida com sucesso", null));
+  }
+
+  @PostMapping("/{id}/generate-pix")
+  public ResponseEntity<ApiResponse<PixPaymentDTO>> generatePix(@PathVariable Long id) {
+    PixPaymentDTO response = generateChargePix.execute(id);
+
+    return ResponseEntity
+        .ok()
+        .body(ApiResponse.success("Pix gerado com sucesso", response));
   }
 }
