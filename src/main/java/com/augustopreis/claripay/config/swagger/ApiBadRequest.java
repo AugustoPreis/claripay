@@ -13,10 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@ApiResponse(
-    responseCode = "400",
-    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-)
+@ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 public @interface ApiBadRequest {
   String description() default "Requisição inválida - Erro de validação nos dados enviados";
 }

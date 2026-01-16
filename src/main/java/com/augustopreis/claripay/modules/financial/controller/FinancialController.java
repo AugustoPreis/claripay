@@ -29,18 +29,13 @@ public class FinancialController {
   private final GetFinancialSummaryUseCase getFinancialSummary;
 
   @GetMapping("/summary")
-  @Operation(
-    summary = "Resumo financeiro",
-    description = "Retorna resumo com receitas, despesas e saldo em um período"
-  )
+  @Operation(summary = "Resumo financeiro", description = "Retorna resumo com receitas, despesas e saldo em um período")
   @ApiOk(schema = FinancialSummaryDTO.class)
   @ApiBadRequest
   @ApiUnauthorized
   public ResponseEntity<ApiResponse<FinancialSummaryDTO>> getSummary(
-      @Parameter(description = "Data inicial", example = "2024-01-01")
-      @RequestParam(required = false) LocalDate startDate,
-      @Parameter(description = "Data final", example = "2024-12-31")
-      @RequestParam(required = false) LocalDate endDate) {
+      @Parameter(description = "Data inicial", example = "2024-01-01") @RequestParam(required = false) LocalDate startDate,
+      @Parameter(description = "Data final", example = "2024-12-31") @RequestParam(required = false) LocalDate endDate) {
     FinancialSummaryDTO response = getFinancialSummary.execute(startDate, endDate);
 
     return ResponseEntity

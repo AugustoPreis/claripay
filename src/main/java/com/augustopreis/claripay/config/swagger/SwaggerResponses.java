@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponses
 public @interface SwaggerResponses {

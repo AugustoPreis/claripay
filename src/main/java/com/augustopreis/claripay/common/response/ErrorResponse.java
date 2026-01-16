@@ -20,7 +20,7 @@ public class ErrorResponse {
 
   @Schema(description = "Mensagem de erro")
   private String message;
-  
+
   @Schema(description = "Lista de erros de validação")
   private List<String> errors;
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 @Schema(description = "Contagem de alertas não lidos")
 public class UnreadCountDTO {
-  
+
   @Schema(description = "Quantidade de alertas não lidos", example = "5")
   private Long count;
 }

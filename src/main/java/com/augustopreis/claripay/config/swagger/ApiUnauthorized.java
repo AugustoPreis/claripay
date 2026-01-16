@@ -13,10 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@ApiResponse(
-    responseCode = "401",
-    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-)
+@ApiResponse(responseCode = "401", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 public @interface ApiUnauthorized {
   String description() default "Não autenticado";
 }

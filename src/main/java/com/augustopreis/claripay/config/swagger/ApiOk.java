@@ -12,5 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 @ApiResponse(responseCode = "200")
 public @interface ApiOk {
   String description() default "Sucesso";
+
   Class<?> schema() default Void.class;
 }
