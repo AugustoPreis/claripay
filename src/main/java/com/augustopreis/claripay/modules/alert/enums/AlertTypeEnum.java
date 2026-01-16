@@ -9,7 +9,8 @@ public enum AlertTypeEnum {
   LATE_CHARGE("Cobrança Atrasada"),
   UPCOMING_CHARGE("Cobrança Próxima"),
   LOW_BALANCE("Saldo Baixo"),
-  NEGATIVE_BALANCE("Saldo Negativo");
+  NEGATIVE_BALANCE("Saldo Negativo"),
+  CASH_FLOW_RISK("Risco de Falta de Caixa");
 
   private final String description;
 }

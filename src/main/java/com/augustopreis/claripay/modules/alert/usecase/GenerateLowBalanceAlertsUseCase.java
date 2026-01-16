@@ -59,8 +59,11 @@ public class GenerateLowBalanceAlertsUseCase {
   }
 
   private boolean isBalanceAlert(Alert alert) {
-    return alert.getType() == AlertTypeEnum.LOW_BALANCE
-        || alert.getType() == AlertTypeEnum.NEGATIVE_BALANCE;
+    final AlertTypeEnum type = alert.getType();
+
+    return type == AlertTypeEnum.LOW_BALANCE
+        || type == AlertTypeEnum.NEGATIVE_BALANCE
+        || type == AlertTypeEnum.CASH_FLOW_RISK;
   }
 
   private BigDecimal calculateLowBalanceThreshold(Long userId) {
@@ -114,10 +117,10 @@ public class GenerateLowBalanceAlertsUseCase {
 
   private void createInsufficientBalanceAlert(User user, BigDecimal currentBalance,
       BigDecimal upcomingExpenses) {
-    String message = AlertMessages.insufficientBalanceMessage(currentBalance, upcomingExpenses);
+    String message = AlertMessages.cashFlowRiskMessage(currentBalance, upcomingExpenses);
 
-    Alert alert = buildAlert(user, AlertMessages.LOW_BALANCE_RISK_TITLE, message,
-        AlertTypeEnum.LOW_BALANCE, AlertSeverityEnum.WARNING);
+    Alert alert = buildAlert(user, AlertMessages.CASH_FLOW_RISK_TITLE, message,
+        AlertTypeEnum.CASH_FLOW_RISK, AlertSeverityEnum.WARNING);
 
     alertRepository.save(alert);
   }

@@ -7,7 +7,7 @@ public final class AlertMessages {
 
   public static final String LATE_CHARGE_TITLE = "Cobrança Atrasada";
   public static final String NEGATIVE_BALANCE_TITLE = "Saldo Negativo";
-  public static final String LOW_BALANCE_RISK_TITLE = "Risco de Falta de Caixa";
+  public static final String CASH_FLOW_RISK_TITLE = "Risco de Falta de Caixa";
   public static final String LOW_BALANCE_TITLE = "Saldo Baixo";
 
   public static String lateChargeMessage(BigDecimal amount, String customerName, LocalDate dueDate) {
@@ -24,9 +24,9 @@ public final class AlertMessages {
         currentBalance);
   }
 
-  public static String insufficientBalanceMessage(BigDecimal currentBalance, BigDecimal upcomingExpenses) {
+  public static String cashFlowRiskMessage(BigDecimal currentBalance, BigDecimal upcomingExpenses) {
     return String.format(
-        "Atenção! Seu saldo (R$ %.2f) pode não ser suficiente para cobrir as despesas dos próximos 7 dias (R$ %.2f).",
+        "Atenção! Seu saldo atual (R$ %.2f) pode não ser suficiente para cobrir as despesas previstas dos próximos 7 dias (R$ %.2f). Considere adiar gastos ou buscar recursos adicionais.",
         currentBalance,
         upcomingExpenses);
   }

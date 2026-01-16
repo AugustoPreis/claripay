@@ -1,0 +1,7 @@
+-- Adiciona o novo tipo de alerta CASH_FLOW_RISK ao constraint
+ALTER TABLE alerts DROP CONSTRAINT IF EXISTS chk_alerts_type;
+
+ALTER TABLE alerts ADD CONSTRAINT chk_alerts_type 
+    CHECK (type IN ('LATE_CHARGE', 'UPCOMING_CHARGE', 'LOW_BALANCE', 'NEGATIVE_BALANCE', 'CASH_FLOW_RISK'));
+
+COMMENT ON COLUMN alerts.type IS 'Tipo do alerta (LATE_CHARGE, UPCOMING_CHARGE, LOW_BALANCE, NEGATIVE_BALANCE, CASH_FLOW_RISK)';
