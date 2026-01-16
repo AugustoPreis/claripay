@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.augustopreis.claripay.common.response.ApiResponse;
+import com.augustopreis.claripay.config.swagger.ApiBadRequest;
+import com.augustopreis.claripay.config.swagger.ApiCreated;
+import com.augustopreis.claripay.config.swagger.ApiOk;
+import com.augustopreis.claripay.config.swagger.ApiUnauthorized;
 import com.augustopreis.claripay.modules.expense.dto.CreateExpenseDTO;
 import com.augustopreis.claripay.modules.expense.dto.ExpenseDTO;
 import com.augustopreis.claripay.modules.expense.dto.UpdateExpenseDTO;
@@ -26,12 +30,16 @@ import com.augustopreis.claripay.modules.expense.usecase.FindOneExpenseUseCase;
 import com.augustopreis.claripay.modules.expense.usecase.RemoveExpenseUseCase;
 import com.augustopreis.claripay.modules.expense.usecase.UpdateExpenseUseCase;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/expenses")
 @RequiredArgsConstructor
+@Tag(name = "Despesas", description = "Gerenciamento de despesas")
 public class ExpenseController {
 
   final FindManyExpenseUseCase findManyExpense;
@@ -41,7 +49,15 @@ public class ExpenseController {
   final RemoveExpenseUseCase removeExpense;
 
   @GetMapping
+  @Operation(
+    summary = "Listar despesas",
+    description = "Lista despesas com filtro de tipo e paginação"
+  )
+  @ApiOk(schema = Page.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<Page<ExpenseDTO>>> findAll(
+      @Parameter(description = "Tipo da despesa")
       @RequestParam(required = false) ExpenseTypeEnum type,
       @PageableDefault(size = 10) Pageable pageable) {
     Page<ExpenseDTO> response = findManyExpense.execute(type, pageable);
@@ -52,7 +68,16 @@ public class ExpenseController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<ExpenseDTO>> findOne(@PathVariable Long id) {
+  @Operation(
+    summary = "Buscar despesa",
+    description = "Retorna uma despesa por ID"
+  )
+  @ApiOk(schema = ExpenseDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
+  public ResponseEntity<ApiResponse<ExpenseDTO>> findOne(
+      @Parameter(description = "ID da despesa", example = "1")
+      @PathVariable Long id) {
     ExpenseDTO response = findOneExpense.execute(id);
 
     return ResponseEntity
@@ -61,6 +86,13 @@ public class ExpenseController {
   }
 
   @PostMapping
+  @Operation(
+    summary = "Criar despesa",
+    description = "Cria uma nova despesa"
+  )
+  @ApiCreated(schema = ExpenseDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<ExpenseDTO>> create(@Valid @RequestBody CreateExpenseDTO request) {
     ExpenseDTO response = createExpense.execute(request);
 
@@ -70,7 +102,15 @@ public class ExpenseController {
   }
 
   @PatchMapping("/{id}")
+  @Operation(
+    summary = "Atualizar despesa",
+    description = "Atualiza uma despesa existente"
+  )
+  @ApiOk(schema = ExpenseDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<ExpenseDTO>> update(
+      @Parameter(description = "ID da despesa", example = "1")
       @PathVariable Long id,
       @Valid @RequestBody UpdateExpenseDTO request) {
     ExpenseDTO response = updateExpense.execute(id, request);
@@ -81,7 +121,16 @@ public class ExpenseController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+  @Operation(
+    summary = "Remover despesa",
+    description = "Remove uma despesa"
+  )
+  @ApiOk
+  @ApiBadRequest
+  @ApiUnauthorized
+  public ResponseEntity<ApiResponse<Void>> delete(
+      @Parameter(description = "ID da despesa", example = "1")
+      @PathVariable Long id) {
     removeExpense.execute(id);
 
     return ResponseEntity
