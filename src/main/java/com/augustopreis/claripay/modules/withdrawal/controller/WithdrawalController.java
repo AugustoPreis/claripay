@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.augustopreis.claripay.common.response.ApiResponse;
+import com.augustopreis.claripay.config.swagger.ApiBadRequest;
+import com.augustopreis.claripay.config.swagger.ApiCreated;
+import com.augustopreis.claripay.config.swagger.ApiOk;
+import com.augustopreis.claripay.config.swagger.ApiUnauthorized;
 import com.augustopreis.claripay.modules.withdrawal.dto.CreateWithdrawalDTO;
 import com.augustopreis.claripay.modules.withdrawal.dto.UpdateWithdrawalDTO;
 import com.augustopreis.claripay.modules.withdrawal.dto.WithdrawalDTO;
@@ -25,12 +29,16 @@ import com.augustopreis.claripay.modules.withdrawal.usecase.FindOneWithdrawalUse
 import com.augustopreis.claripay.modules.withdrawal.usecase.RemoveWithdrawalUseCase;
 import com.augustopreis.claripay.modules.withdrawal.usecase.UpdateWithdrawalUseCase;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/withdrawals")
 @RequiredArgsConstructor
+@Tag(name = "Retiradas", description = "Gerenciamento de retiradas")
 public class WithdrawalController {
 
   private final FindManyWithdrawalUseCase findManyWithdrawal;
@@ -40,6 +48,10 @@ public class WithdrawalController {
   private final RemoveWithdrawalUseCase removeWithdrawal;
 
   @GetMapping
+  @Operation(summary = "Listar retiradas", description = "Lista retiradas com paginação")
+  @ApiOk(schema = Page.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<Page<WithdrawalDTO>>> findAll(
       @PageableDefault(size = 10, sort = "date", direction = Sort.Direction.DESC) Pageable pageable) {
     Page<WithdrawalDTO> response = findManyWithdrawal.execute(pageable);
@@ -50,7 +62,12 @@ public class WithdrawalController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<WithdrawalDTO>> findOne(@PathVariable Long id) {
+  @Operation(summary = "Buscar retirada", description = "Retorna uma retirada por ID")
+  @ApiOk(schema = WithdrawalDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
+  public ResponseEntity<ApiResponse<WithdrawalDTO>> findOne(
+      @Parameter(description = "ID da retirada", example = "1") @PathVariable Long id) {
     WithdrawalDTO response = findOneWithdrawal.execute(id);
 
     return ResponseEntity
@@ -59,6 +76,10 @@ public class WithdrawalController {
   }
 
   @PostMapping
+  @Operation(summary = "Criar retirada", description = "Cria uma nova retirada")
+  @ApiCreated(schema = WithdrawalDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<WithdrawalDTO>> create(@Valid @RequestBody CreateWithdrawalDTO request) {
     WithdrawalDTO response = createWithdrawal.execute(request);
 
@@ -68,8 +89,12 @@ public class WithdrawalController {
   }
 
   @PatchMapping("/{id}")
+  @Operation(summary = "Atualizar retirada", description = "Atualiza uma retirada existente")
+  @ApiOk(schema = WithdrawalDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<WithdrawalDTO>> update(
-      @PathVariable Long id,
+      @Parameter(description = "ID da retirada", example = "1") @PathVariable Long id,
       @Valid @RequestBody UpdateWithdrawalDTO request) {
     WithdrawalDTO response = updateWithdrawal.execute(id, request);
 
@@ -79,7 +104,12 @@ public class WithdrawalController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+  @Operation(summary = "Remover retirada", description = "Remove uma retirada")
+  @ApiOk
+  @ApiBadRequest
+  @ApiUnauthorized
+  public ResponseEntity<ApiResponse<Void>> delete(
+      @Parameter(description = "ID da retirada", example = "1") @PathVariable Long id) {
     removeWithdrawal.execute(id);
 
     return ResponseEntity
