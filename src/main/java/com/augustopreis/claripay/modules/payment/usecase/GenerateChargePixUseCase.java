@@ -12,7 +12,9 @@ import com.augustopreis.claripay.modules.payment.dto.PixPaymentDTO;
 import com.augustopreis.claripay.modules.payment.provider.PaymentProvider;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GenerateChargePixUseCase {
@@ -34,6 +36,7 @@ public class GenerateChargePixUseCase {
 
       return pixPayment;
     } catch (Exception e) {
+      log.error("Erro ao gerar pagamento PIX para a cobrança ID {}: {}", chargeId, e.getMessage());
       throw new BusinessException("Não foi possível gerar o PIX, tente novamente mais tarde.");
     }
   }

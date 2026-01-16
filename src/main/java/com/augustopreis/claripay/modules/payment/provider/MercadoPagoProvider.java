@@ -7,19 +7,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.augustopreis.claripay.exception.MercadoPagoException;
 import com.augustopreis.claripay.modules.charge.repository.entity.Charge;
 import com.augustopreis.claripay.modules.payment.dto.PixPaymentDTO;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.payment.PaymentCreateRequest;
 import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.exceptions.MPApiException;
-import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.payment.Payment;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MercadoPagoProvider implements PaymentProvider {
@@ -69,10 +67,7 @@ public class MercadoPagoProvider implements PaymentProvider {
           .expirationMinutes(expirationMinutes)
           .build();
     } catch (MPApiException e) {
-      MPResponse apiResponse = e.getApiResponse();
-      log.error("Erro ao criar pagamento no Mercado Pago: {}", apiResponse.getContent());
-
-      throw new RuntimeException("Erro ao criar pagamento no Mercado Pago");
+      throw new MercadoPagoException(e.getApiResponse().getContent());
     }
   }
 
