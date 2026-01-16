@@ -46,6 +46,9 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/reset-password").permitAll()
             .requestMatchers("/actuator/**").permitAll()
             .requestMatchers("/h2-console/**").permitAll()
+            .requestMatchers("/api-docs/**").permitAll()
+            .requestMatchers("/swagger-ui/**").permitAll()
+            .requestMatchers("/swagger-ui.html").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
             .anyRequest().authenticated())
         .exceptionHandling(ex -> ex
