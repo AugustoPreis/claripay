@@ -2,6 +2,7 @@ package com.augustopreis.claripay.modules.charge.dto;
 
 import com.augustopreis.claripay.modules.charge.enums.ChargeStatusEnum;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +15,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Dados para atualizar status da cobrança")
 public class UpdateChargeStatusDTO {
 
+  @Schema(description = "Novo status")
   @NotNull(message = "O status é obrigatório")
   private ChargeStatusEnum status;
 }

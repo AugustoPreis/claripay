@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.augustopreis.claripay.common.response.ApiResponse;
+import com.augustopreis.claripay.config.swagger.ApiBadRequest;
+import com.augustopreis.claripay.config.swagger.ApiCreated;
+import com.augustopreis.claripay.config.swagger.ApiOk;
+import com.augustopreis.claripay.config.swagger.ApiUnauthorized;
 import com.augustopreis.claripay.modules.charge.dto.ChargeDTO;
 import com.augustopreis.claripay.modules.charge.dto.CreateChargeDTO;
 import com.augustopreis.claripay.modules.charge.dto.UpdateChargeDTO;
@@ -33,12 +37,16 @@ import com.augustopreis.claripay.modules.charge.usecase.UpdateChargeUseCase;
 import com.augustopreis.claripay.modules.payment.dto.PixPaymentDTO;
 import com.augustopreis.claripay.modules.payment.usecase.GenerateChargePixUseCase;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/charges")
 @RequiredArgsConstructor
+@Tag(name = "Cobranças", description = "Gerenciamento de cobranças")
 public class ChargeController {
 
   private final FindManyChargeUseCase findManyCharge;
@@ -50,11 +58,15 @@ public class ChargeController {
   private final GenerateChargePixUseCase generateChargePix;
 
   @GetMapping
+  @Operation(summary = "Listar cobranças", description = "Lista cobranças com filtros e paginação")
+  @ApiOk(schema = Page.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<Page<ChargeDTO>>> findAll(
-      @RequestParam(required = false) Long customerId,
-      @RequestParam(required = false) BigDecimal minAmount,
-      @RequestParam(required = false) BigDecimal maxAmount,
-      @RequestParam(required = false) ChargeStatusEnum status,
+      @Parameter(description = "ID do cliente", example = "1") @RequestParam(required = false) Long customerId,
+      @Parameter(description = "Valor mínimo", example = "100.00") @RequestParam(required = false) BigDecimal minAmount,
+      @Parameter(description = "Valor máximo", example = "1000.00") @RequestParam(required = false) BigDecimal maxAmount,
+      @Parameter(description = "Status da cobrança") @RequestParam(required = false) ChargeStatusEnum status,
       @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
     Page<ChargeDTO> response = findManyCharge.execute(customerId, minAmount, maxAmount, status, pageable);
     return ResponseEntity
@@ -63,7 +75,12 @@ public class ChargeController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<ChargeDTO>> findOne(@PathVariable Long id) {
+  @Operation(summary = "Buscar cobrança", description = "Retorna uma cobrança por ID")
+  @ApiOk(schema = ChargeDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
+  public ResponseEntity<ApiResponse<ChargeDTO>> findOne(
+      @Parameter(description = "ID da cobrança", example = "1") @PathVariable Long id) {
     ChargeDTO response = findOneCharge.execute(id);
 
     return ResponseEntity
@@ -72,6 +89,10 @@ public class ChargeController {
   }
 
   @PostMapping
+  @Operation(summary = "Criar cobrança", description = "Cria uma nova cobrança")
+  @ApiCreated(schema = ChargeDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<ChargeDTO>> create(@Valid @RequestBody CreateChargeDTO request) {
     ChargeDTO response = createCharge.execute(request);
 
@@ -81,8 +102,12 @@ public class ChargeController {
   }
 
   @PatchMapping("/{id}")
+  @Operation(summary = "Atualizar cobrança", description = "Atualiza uma cobrança existente")
+  @ApiOk(schema = ChargeDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<ChargeDTO>> update(
-      @PathVariable Long id,
+      @Parameter(description = "ID da cobrança", example = "1") @PathVariable Long id,
       @Valid @RequestBody UpdateChargeDTO request) {
     ChargeDTO response = updateCharge.execute(id, request);
 
@@ -92,8 +117,12 @@ public class ChargeController {
   }
 
   @PatchMapping("/{id}/status")
+  @Operation(summary = "Atualizar status da cobrança", description = "Atualiza o status de uma cobrança")
+  @ApiOk(schema = ChargeDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
   public ResponseEntity<ApiResponse<ChargeDTO>> updateStatus(
-      @PathVariable Long id,
+      @Parameter(description = "ID da cobrança", example = "1") @PathVariable Long id,
       @Valid @RequestBody UpdateChargeStatusDTO request) {
     ChargeDTO response = updateChargeStatus.execute(id, request);
 
@@ -103,7 +132,12 @@ public class ChargeController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
+  @Operation(summary = "Remover cobrança", description = "Remove uma cobrança")
+  @ApiOk
+  @ApiBadRequest
+  @ApiUnauthorized
+  public ResponseEntity<ApiResponse<Void>> delete(
+      @Parameter(description = "ID da cobrança", example = "1") @PathVariable Long id) {
     removeCharge.execute(id);
 
     return ResponseEntity
@@ -112,7 +146,12 @@ public class ChargeController {
   }
 
   @PostMapping("/{id}/generate-pix")
-  public ResponseEntity<ApiResponse<PixPaymentDTO>> generatePix(@PathVariable Long id) {
+  @Operation(summary = "Gerar PIX", description = "Gera um código PIX para pagamento da cobrança")
+  @ApiOk(schema = PixPaymentDTO.class)
+  @ApiBadRequest
+  @ApiUnauthorized
+  public ResponseEntity<ApiResponse<PixPaymentDTO>> generatePix(
+      @Parameter(description = "ID da cobrança", example = "1") @PathVariable Long id) {
     PixPaymentDTO response = generateChargePix.execute(id);
 
     return ResponseEntity
