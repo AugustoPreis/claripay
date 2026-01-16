@@ -18,5 +18,5 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
 )
 public @interface ApiBadRequest {
-  String description() default "Requisição inválida";
+  String description() default "Requisição inválida - Erro de validação nos dados enviados";
 }
